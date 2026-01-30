@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const PietersBirthdayGuide = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef(null);
 
   const steps = [
@@ -298,11 +299,26 @@ WantedBy=multi-user.target`,
     inputRef.current?.focus();
   }, []);
 
+  // Handle mobile keyboard
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.visualViewport) {
+        const heightDiff = window.innerHeight - window.visualViewport.height;
+        setKeyboardHeight(heightDiff > 50 ? heightDiff : 0);
+      }
+    };
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+      return () => window.visualViewport.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
   const Line = ({ num, children, highlight, dim, indent = 0 }) => (
     <div className="flex">
-      <span className="w-8 text-right pr-4 text-gray-600 select-none flex-shrink-0">{num}</span>
+      <span className="w-6 sm:w-8 text-right pr-2 sm:pr-4 text-gray-600 select-none flex-shrink-0 text-xs sm:text-sm">{num}</span>
       <span
-        className={`flex-1 whitespace-pre ${highlight ? 'text-rose-400' : ''} ${dim ? 'text-gray-500' : 'text-gray-300'}`}
+        className={`flex-1 whitespace-pre-wrap break-words ${highlight ? 'text-rose-400' : ''} ${dim ? 'text-gray-500' : 'text-gray-300'}`}
         style={{ paddingLeft: `${indent}rem` }}
       >
         {children}
@@ -312,7 +328,7 @@ WantedBy=multi-user.target`,
 
   const EmptyLine = ({ num }) => (
     <div className="flex">
-      <span className="w-8 text-right pr-4 text-gray-600 select-none">{num}</span>
+      <span className="w-6 sm:w-8 text-right pr-2 sm:pr-4 text-gray-600 select-none text-xs sm:text-sm">{num}</span>
       <span>&nbsp;</span>
     </div>
   );
@@ -321,7 +337,8 @@ WantedBy=multi-user.target`,
 
   return (
     <div
-      className="min-h-screen bg-[#1a1b26] text-gray-300 font-mono text-sm flex flex-col"
+      className="h-[100dvh] bg-[#1a1b26] text-gray-300 font-mono text-xs sm:text-sm flex flex-col overflow-hidden"
+      style={{ paddingBottom: keyboardHeight }}
       onClick={() => inputRef.current?.focus()}
     >
       <input
@@ -329,10 +346,11 @@ WantedBy=multi-user.target`,
         type="text"
         className="absolute opacity-0 pointer-events-none"
         autoFocus
+        readOnly
       />
 
-      <div className="flex-1 p-4 overflow-auto">
-        <div className="max-w-3xl mx-auto">
+      <div className="flex-1 p-2 sm:p-4 overflow-auto">
+        <div className="max-w-3xl mx-auto pb-4">
 
           {step.type === 'intro' && (
             <div>
@@ -343,8 +361,8 @@ WantedBy=multi-user.target`,
               <EmptyLine num={lineNum++} />
               {step.photo && (
                 <div className="flex">
-                  <span className="w-8 text-right pr-4 text-gray-600 select-none flex-shrink-0">{lineNum++}</span>
-                  <img src={step.photo} alt="Pieter and Jasper" className="max-w-full max-h-64 object-contain" />
+                  <span className="w-6 sm:w-8 text-right pr-2 sm:pr-4 text-gray-600 select-none flex-shrink-0 text-xs sm:text-sm">{lineNum++}</span>
+                  <img src={step.photo} alt="Pieter and Jasper" className="max-w-full max-h-48 sm:max-h-64 object-contain" />
                 </div>
               )}
             </div>
@@ -633,13 +651,13 @@ WantedBy=multi-user.target`,
         </div>
       </div>
 
-      <div className="bg-[#16161e] border-t border-gray-800 px-4 py-2 flex justify-between items-center text-xs">
+      <div className="bg-[#16161e] border-t border-gray-800 px-2 sm:px-4 py-2 flex justify-between items-center text-[10px] sm:text-xs flex-shrink-0">
         <span className="text-gray-500">
           <span className="text-rose-400">h</span>/<span className="text-rose-400">l</span> to navigate
         </span>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <span className="text-gray-500">[{currentStep + 1}/{totalSteps}]</span>
-          <span className="text-cyan-400">birthday.md</span>
+          <span className="text-cyan-400 hidden sm:inline">birthday.md</span>
           <span className="text-green-400">main</span>
         </div>
       </div>
