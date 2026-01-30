@@ -344,9 +344,18 @@ WantedBy=multi-user.target`,
       <input
         ref={inputRef}
         type="text"
-        className="absolute opacity-0 pointer-events-none"
+        className="absolute top-0 left-0 w-full h-12 opacity-0"
         autoFocus
-        readOnly
+        onKeyDown={(e) => {
+          if (e.key === 'l' || e.key === 'L') nextStep();
+          else if (e.key === 'h' || e.key === 'H') prevStep();
+        }}
+        onChange={(e) => {
+          const val = e.target.value.toLowerCase();
+          if (val.includes('l')) nextStep();
+          else if (val.includes('h')) prevStep();
+          e.target.value = '';
+        }}
       />
 
       <div className="flex-1 p-2 sm:p-4 overflow-auto">
