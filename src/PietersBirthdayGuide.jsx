@@ -283,19 +283,6 @@ WantedBy=multi-user.target`,
   };
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'l' || e.key === 'L') {
-        nextStep();
-      } else if (e.key === 'h' || e.key === 'H') {
-        prevStep();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentStep]);
-
-  useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
@@ -346,10 +333,6 @@ WantedBy=multi-user.target`,
         type="text"
         className="absolute top-0 left-0 w-full h-12 opacity-0"
         autoFocus
-        onKeyDown={(e) => {
-          if (e.key === 'l' || e.key === 'L') nextStep();
-          else if (e.key === 'h' || e.key === 'H') prevStep();
-        }}
         onChange={(e) => {
           const val = e.target.value.toLowerCase();
           if (val.includes('l')) nextStep();
