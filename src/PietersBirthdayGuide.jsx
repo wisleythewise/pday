@@ -14,14 +14,14 @@ const PietersBirthdayGuide = () => {
     },
     {
       type: 'story',
-      title: '# A Gift for You',
-      content: 'Every day, we write down the most memorable thing we experienced. One sentence. One moment. Captured forever.',
-      subContent: 'I wanted to give you something special — something you can build with your hands, something that holds our memories.',
+      title: '# Deze is voor jou',
+      content: 'Elke dag doen, we storyworthy.',
+      subContent: 'Dus hierbij iets cringe maar ook wel iets moois met optionality',
     },
     {
       type: 'story',
-      title: '# What You\'re Building',
-      content: 'A memory machine. A small device that displays our daily sentences, one at a time. Press forward, press back, relive the moments.',
+      title: '# Het cadeau',
+      content: 'Het is zo een digitaal foto boek, maar dan met de sommige one day zinnen',
       subContent: 'Raspberry Pi + Screen + Two Buttons + Our Stories',
     },
     {
@@ -39,7 +39,7 @@ const PietersBirthdayGuide = () => {
     },
     {
       type: 'assembly',
-      title: '# Step 1: Connect the Display',
+      title: '# Step 1: Connect the Display (over naar het engels)',
       instruction: 'Align the e-Paper HAT with the GPIO pins on the Raspberry Pi Zero 2 W',
       detail: 'Gently press down until fully seated',
     },
@@ -84,7 +84,7 @@ const PietersBirthdayGuide = () => {
     {
       type: 'finale',
       title: '# Happy 27th',
-      content: "Here's to more sentences, more memories, more adventures together.",
+      content: "Op nog veel zinnen samen",
       signature: '-- Jasper',
     }
   ];
