@@ -21,7 +21,7 @@ const PietersBirthdayGuide = () => {
     {
       type: 'story',
       title: '# Het cadeau',
-      content: 'Het is zo een digitaal foto boek, maar dan met de sommige one day zinnen',
+      content: 'Het is zo een digitaal foto boek, maar dan met de one day zinnen',
       subContent: 'Raspberry Pi + Screen + Two Buttons + Our Stories',
     },
     {
