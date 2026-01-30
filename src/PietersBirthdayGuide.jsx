@@ -27,44 +27,14 @@ const PietersBirthdayGuide = () => {
     {
       type: 'parts',
       title: '# Parts List',
-      subtitle: '## Click links to add to Amazon basket',
+      subtitle: '## Everything you need',
       items: [
-        {
-          name: 'Raspberry Pi Zero 2 WH',
-          qty: '1x',
-          note: 'Pre-soldered headers, quad-core ARM Cortex-A53 @ 1GHz, 512MB RAM',
-          url: 'https://www.amazon.com/Raspberry-Pi-Zero-2-WH/dp/B0DB2JBD9C'
-        },
-        {
-          name: 'Samsung EVO Plus 32GB microSD',
-          qty: '1x',
-          note: 'Class 10, UHS-I, up to 130MB/s read',
-          url: 'https://www.amazon.com/dp/B09B1HMJ9Z'
-        },
-        {
-          name: 'Waveshare 2.13" e-Paper HAT V4',
-          qty: '1x',
-          note: '250x122 resolution, SPI interface, partial refresh 0.3s',
-          url: 'https://www.amazon.com/waveshare-2-13inch-HAT-Compatible-Resolution/dp/B071S8HT76'
-        },
-        {
-          name: 'Tactile Push Buttons (6mm)',
-          qty: '2x',
-          note: 'Breadboard-friendly, normally open',
-          url: 'https://www.amazon.com/Momentary-Tactile-Breadboard-Friendly-QTEATAK/dp/B0815WDS4D'
-        },
-        {
-          name: 'Female-to-Female Jumper Wires',
-          qty: '1x',
-          note: 'Dupont 2.54mm, you only need 4 wires',
-          url: 'https://www.amazon.com/Elegoo-EL-CP-004-Multicolored-Breadboard-arduino/dp/B01EV70C78'
-        },
-        {
-          name: '5V 3A Micro USB Power Supply',
-          qty: '1x',
-          note: 'With on/off switch, UL certified',
-          url: 'https://www.amazon.com/NorthPada-Raspberry-Supply-Charger-Adapter/dp/B01N336XEU'
-        }
+        { name: 'Raspberry Pi Zero 2 WH', qty: '1x', note: 'Pre-soldered headers' },
+        { name: 'MicroSD Card 32GB', qty: '1x', note: 'Class 10' },
+        { name: 'Waveshare 2.13" e-Paper HAT', qty: '1x', note: '250x122 resolution' },
+        { name: 'Tactile Push Buttons', qty: '2x', note: '6mm, breadboard-friendly' },
+        { name: 'Female-to-Female Jumper Wires', qty: '4x', note: 'Dupont 2.54mm' },
+        { name: '5V 3A Micro USB Power Supply', qty: '1x', note: 'With on/off switch' },
       ]
     },
     {
@@ -159,19 +129,29 @@ GPIO26  (37) (38) GPIO20
       warning: 'Tactile buttons have 4 legs connected in pairs. Use legs from OPPOSITE sides.',
     },
     {
-      type: 'display',
-      title: '# Step 4: Attach e-Paper HAT',
+      type: 'waveshare',
+      title: '# Step 4: Connect Waveshare e-Paper HAT',
+      intro: 'The HAT connects directly to all 40 GPIO pins.',
       steps: [
-        'Power off the Pi (unplug USB)',
-        'Align HAT pins with GPIO header',
-        'Pin 1 (3.3V) should match the square pad',
-        'Press down firmly until seated',
+        'POWER OFF the Pi completely (unplug USB)',
+        'Look at the Pi - find pin 1 (has square solder pad)',
+        'Look at the HAT - find the arrow/pin 1 marker',
+        'Align HAT connector with Pi GPIO header',
+        'Pin 1 on HAT must match pin 1 on Pi',
+        'Press down FIRMLY and evenly until fully seated',
+        'The display will overhang past the Pi board edge',
       ],
-      notes: [
-        'HAT uses SPI: MOSI(10), SCLK(11), CE0(8)',
-        'Also: RST(17), DC(25), BUSY(24)',
-        'No extra wiring needed for display',
-      ]
+      pinout: [
+        { pin: 'VCC', gpio: '3.3V (pin 1)', desc: 'Power' },
+        { pin: 'GND', gpio: 'GND (pin 6)', desc: 'Ground' },
+        { pin: 'DIN', gpio: 'GPIO10/MOSI (pin 19)', desc: 'SPI data in' },
+        { pin: 'CLK', gpio: 'GPIO11/SCLK (pin 23)', desc: 'SPI clock' },
+        { pin: 'CS', gpio: 'GPIO8/CE0 (pin 24)', desc: 'Chip select' },
+        { pin: 'DC', gpio: 'GPIO25 (pin 22)', desc: 'Data/Command' },
+        { pin: 'RST', gpio: 'GPIO17 (pin 11)', desc: 'Reset' },
+        { pin: 'BUSY', gpio: 'GPIO24 (pin 18)', desc: 'Busy signal' },
+      ],
+      warning: 'All pins connect automatically via the HAT. No jumper wires needed for the display!',
     },
     {
       type: 'ssh',
@@ -337,20 +317,6 @@ WantedBy=multi-user.target`,
     </div>
   );
 
-  const LinkLine = ({ num, url, children }) => (
-    <div className="flex">
-      <span className="w-8 text-right pr-4 text-gray-600 select-none flex-shrink-0">{num}</span>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-400 hover:text-blue-300 hover:underline truncate"
-      >
-        {children}
-      </a>
-    </div>
-  );
-
   let lineNum = 1;
 
   return (
@@ -404,15 +370,11 @@ WantedBy=multi-user.target`,
               <Line num={lineNum++} dim>{step.subtitle}</Line>
               <EmptyLine num={lineNum++} />
               {step.items.map((item, i) => (
-                <div key={i}>
-                  <Line num={lineNum++}>
-                    <span className="text-cyan-400">{item.qty}</span>
-                    {' '}<span className="text-yellow-300">{item.name}</span>
-                  </Line>
-                  <Line num={lineNum++} dim indent={1}>{item.note}</Line>
-                  <LinkLine num={lineNum++} url={item.url}>{item.url}</LinkLine>
-                  <EmptyLine num={lineNum++} />
-                </div>
+                <Line key={i} num={lineNum++}>
+                  <span className="text-cyan-400">{item.qty}</span>
+                  {' '}<span className="text-yellow-300">{item.name}</span>
+                  <span className="text-gray-500"> -- {item.note}</span>
+                </Line>
               ))}
             </div>
           )}
@@ -495,18 +457,28 @@ WantedBy=multi-user.target`,
             </div>
           )}
 
-          {step.type === 'display' && (
+          {step.type === 'waveshare' && (
             <div>
               <Line num={lineNum++} highlight>{step.title}</Line>
+              <EmptyLine num={lineNum++} />
+              <Line num={lineNum++}>{step.intro}</Line>
               <EmptyLine num={lineNum++} />
               {step.steps.map((s, i) => (
                 <Line key={i} num={lineNum++}><span className="text-cyan-400">{i + 1}.</span> {s}</Line>
               ))}
               <EmptyLine num={lineNum++} />
-              <Line num={lineNum++} dim>## Technical notes:</Line>
-              {step.notes.map((note, i) => (
-                <Line key={i} num={lineNum++}><span className="text-yellow-400">*</span> {note}</Line>
+              <Line num={lineNum++} dim>## HAT Pin Connections (automatic):</Line>
+              <EmptyLine num={lineNum++} />
+              {step.pinout.map((p, i) => (
+                <Line key={i} num={lineNum++}>
+                  <span className="text-yellow-400">{p.pin.padEnd(5)}</span>
+                  {' -> '}
+                  <span className="text-cyan-400">{p.gpio}</span>
+                  <span className="text-gray-500"> -- {p.desc}</span>
+                </Line>
               ))}
+              <EmptyLine num={lineNum++} />
+              <Line num={lineNum++}><span className="text-green-400">TIP:</span> {step.warning}</Line>
             </div>
           )}
 
