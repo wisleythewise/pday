@@ -29,6 +29,7 @@ const PietersBirthdayGuide = () => {
       type: 'parts',
       title: '# Parts List',
       subtitle: '## Everything you need',
+      image: '/parts-image.png',
       items: [
         { name: 'Raspberry Pi Zero 2 WH', qty: '1x', note: 'Pre-soldered headers' },
         { name: 'MicroSD Card 32GB', qty: '1x', note: 'Class 10' },
@@ -379,6 +380,15 @@ WantedBy=multi-user.target`,
               <Line num={lineNum++} highlight>{step.title}</Line>
               <Line num={lineNum++} dim>{step.subtitle}</Line>
               <EmptyLine num={lineNum++} />
+              {step.image && (
+                <>
+                  <div className="flex">
+                    <span className="w-6 sm:w-8 text-right pr-2 sm:pr-4 text-gray-600 select-none flex-shrink-0 text-xs sm:text-sm">{lineNum++}</span>
+                    <img src={step.image} alt="Parts reference" className="max-w-full max-h-48 sm:max-h-64 object-contain rounded" />
+                  </div>
+                  <EmptyLine num={lineNum++} />
+                </>
+              )}
               {step.items.map((item, i) => (
                 <Line key={i} num={lineNum++}>
                   <span className="text-cyan-400">{item.qty}</span>
