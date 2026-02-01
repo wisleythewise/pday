@@ -8,8 +8,8 @@ const PietersBirthdayGuide = () => {
   const steps = [
     {
       type: 'intro',
-      title: '# Hey Pieter',
-      subtitle: '## 27 years of being awesome',
+      title: '# Hey Pie',
+      subtitle: '## Gefliciteerd maatje',
       content: 'Nice to have you in my life.',
       photo: '/photo.png',
     },
